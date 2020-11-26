@@ -37,11 +37,15 @@ import com.griefcraft.util.ProtectionFinder;
 import com.griefcraft.util.StringUtil;
 import com.griefcraft.util.TimeUtil;
 import com.griefcraft.util.UUIDRegistry;
+import com.griefcraft.sql.PersistentDB;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
@@ -913,7 +917,29 @@ public class Protection {
         if (modified && !removing) {
 // HOOK: save
             if (usePDC) {
-                return;
+                BlockState block = getBlock().getState();
+                PersistentDataHolder dataHolder = null;
+                try {
+                    dataHolder = (PersistentDataHolder) block;
+                    PersistentDataContainer pdc = dataHolder.getPersistentDataContainer();
+                    PersistentDB helper = LWC.getInstance().getPersistentDB();
+
+                    // build data to write
+                    PersistentDB.ProtectionInfo info = new PersistentDB.ProtectionInfo();
+                    info.protectionId = getId();
+                    info.type = type.ordinal();
+                    info.owner = owner;
+                    info.password = password;
+                    info.date = getCreation();
+                    info.lastAccessed = lastAccessed;
+                    info.data = data.toJSONString();
+		    boolean ok = helper.saveTo(pdc, info);
+		    if (ok) {
+		        block.update(true); // write back!!
+                    }
+                    return;
+                } catch (ClassCastException e) {
+                }
             }
             LWC.getInstance().getPhysicalDatabase().saveProtection(this);
         }

@@ -129,13 +129,13 @@ public class PersistentDB {
 	}
 
 	public static class ProtectionInfo {
-		Integer protectionId; // id
-		Integer type; // type
-		String owner; // owner
-		String password; // password
-		String date; // date
-		Long lastAccessed; // last_accessed
-		String data; // JSON_data
+		public Integer protectionId; // id
+		public Integer type; // type
+		public String owner; // owner
+		public String password; // password
+		public String date; // date
+		public Long lastAccessed; // last_accessed
+		public String data; // JSON_data
 	}
 }
 

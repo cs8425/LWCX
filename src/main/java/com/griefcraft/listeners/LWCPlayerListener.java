@@ -597,12 +597,7 @@ public class LWCPlayerListener implements Listener {
             Module.Result result = Module.Result.DEFAULT;
             Protection protection = lwc.findProtection(block.getLocation());
             boolean canAccess = lwc.canAccessProtection(player, protection);
-if (protection != null) {
-player.sendMessage("[PlayerInteractEvent] protection: " + protection.toString());
-}else{
-player.sendMessage("[PlayerInteractEvent] protection = null: " + block);
-player.sendMessage("[PlayerInteractEvent] protection2: " + lwc.findProtection(state));
-}
+
             if (usingMainHand) {
                 if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                     boolean ignoreLeftClick = Boolean

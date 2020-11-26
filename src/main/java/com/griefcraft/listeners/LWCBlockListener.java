@@ -531,11 +531,8 @@ public class LWCBlockListener implements Listener {
 
             if (protection != null) {
                 lwc.getModuleLoader().dispatchEvent(new LWCProtectionRegistrationPostEvent(protection));
-player.sendMessage("[BlockPlaceEvent] protection: " + protection.toString());
             }
-else{
-player.sendMessage("[BlockPlaceEvent] null: " + protection);
-}
+
             protection.saveNow();
         } catch (Exception e) {
             lwc.sendLocale(player, "protection.internalerror", "id", "PLAYER_INTERACT");
