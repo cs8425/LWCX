@@ -233,6 +233,11 @@ public class Protection {
      */
     private Block cachedBlock;
 
+    /**
+     * If the protection is using PersistentDataContainer. Only used internally.
+     */
+    public boolean usePDC = false;
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof Protection)) {
@@ -884,7 +889,11 @@ public class Protection {
         if (removed) {
             return;
         }
-
+// HOOK: call saveNow()/skip
+        if (usePDC) {
+            saveNow();
+            return;
+        }
         LWC.getInstance().getDatabaseThread().addProtection(this);
     }
 
@@ -902,6 +911,10 @@ public class Protection {
 
         // only save the protection if it was modified
         if (modified && !removing) {
+// HOOK: save
+            if (usePDC) {
+                return;
+            }
             LWC.getInstance().getPhysicalDatabase().saveProtection(this);
         }
 
