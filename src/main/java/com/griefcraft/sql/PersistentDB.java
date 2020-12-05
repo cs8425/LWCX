@@ -128,6 +128,17 @@ public class PersistentDB {
 		return true;
 	}
 
+	public boolean clear(PersistentDataContainer dc) {
+		dc.remove(nKey.get("id"));
+		dc.remove(nKey.get("type"));
+		dc.remove(nKey.get("owner"));
+		dc.remove(nKey.get("password"));
+		dc.remove(nKey.get("date"));
+		dc.remove(nKey.get("last_accessed"));
+		dc.remove(nKey.get("JSON_data"));
+		return true;
+	}
+
 	public static class ProtectionInfo {
 		public Integer protectionId; // id
 		public Integer type; // type

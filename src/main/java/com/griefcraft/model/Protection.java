@@ -841,6 +841,20 @@ public class Protection {
         // ensure all history objects for this protection are saved
         checkAndSaveHistory();
 
+        // HOOK: clear PDC
+        if (usePDC) {
+            BlockState block = getBlock().getState();
+            PersistentDataHolder dataHolder = null;
+            try {
+                dataHolder = (PersistentDataHolder) block;
+                PersistentDataContainer pdc = dataHolder.getPersistentDataContainer();
+                PersistentDB helper = LWC.getInstance().getPersistentDB();
+                helper.clear(pdc); // clear PDC
+                block.update(true); // write back!!
+            } catch (ClassCastException e) {
+            }
+        }
+
         // make the protection immutable
         removed = true;
 
